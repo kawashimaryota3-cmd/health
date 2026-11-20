@@ -36,6 +36,7 @@
         --sand-soft: #f6efdb;
         --ring-track: #e9dfc8;    /* リングの砂色 */
         --bar-idle: #bfe0f1;
+        --cal-basal: #93cf9f;     /* 基礎代謝バーの薄い緑 */
         --shadow: 0 1px 2px rgba(63,74,52,.05), 0 10px 28px -18px rgba(63,74,52,.20);
         --radius: 20px;
       }
@@ -55,6 +56,7 @@
           --sand-soft: #3d3520;
           --ring-track: #4d4433;
           --bar-idle: #33505f;
+          --cal-basal: #6fae82;
           --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -18px rgba(0,0,0,.7);
         }
       }
@@ -145,6 +147,29 @@
       .avg-line { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2px 12px; font-size: 12px; color: var(--ink-3); border-top: 1px dashed var(--line); padding-top: 10px; margin-top: 12px; }
       .avg-line strong { color: var(--ink-2); }
 
+      /* ---------- 14 day calorie chart ---------- */
+      .cal-detail { display: flex; flex-wrap: wrap; gap: 2px 18px; margin: 0 0 12px; font-size: 13.5px; min-height: 26px; align-items: baseline; }
+      .cal-detail .ci { display: inline-flex; align-items: baseline; gap: 6px; white-space: nowrap; }
+      .cal-detail .sw { width: 10px; height: 10px; border-radius: 3px; background: var(--accent); align-self: center; flex: none; }
+      .cal-detail .ci.bas .sw { background: var(--cal-basal); }
+      .cal-detail .clbl { color: var(--ink-2); font-weight: 700; font-size: 12.5px; }
+      .cal-detail .cv { font-size: 19px; font-weight: 800; }
+      .cal-detail .cv small { font-size: 11.5px; color: var(--ink-2); font-weight: 700; }
+      .cal-detail .none { color: var(--ink-2); font-size: 13px; }
+      .cal-bars { display: grid; grid-template-columns: repeat(14, 1fr); gap: 4px; align-items: end; height: 132px; }
+      .cal-col { display: flex; flex-direction: column; align-items: center; gap: 7px; height: 100%; justify-content: flex-end; min-width: 0; }
+      .cal-btn {
+        appearance: none; border: 0; background: transparent; padding: 6px 0 0; cursor: pointer;
+        width: 100%; display: flex; justify-content: center; align-items: flex-end; flex: 1;
+      }
+      .cal-btn .stack { display: flex; flex-direction: column; justify-content: flex-end; width: min(18px, 80%); border-radius: 5px 5px 3px 3px; overflow: hidden; height: 4px; transition: height .7s cubic-bezier(.22,.8,.3,1); }
+      .cal-btn .seg-basal { background: var(--cal-basal); width: 100%; }
+      .cal-btn .seg-act { background: var(--accent); width: 100%; }
+      .cal-btn .seg-none { background: var(--ring-track); width: 100%; height: 100%; }
+      .cal-btn[aria-pressed="true"] .stack { outline: 2px solid var(--green); outline-offset: 2px; }
+      .cal-day { font-size: 10.5px; color: var(--ink-3); font-weight: 700; }
+      .cal-col.today .cal-day { color: var(--accent); }
+
       /* ---------- update schedule ---------- */
       .sched { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
       .sched li { display: flex; align-items: baseline; gap: 14px; padding: 11px 0; border-top: 1px solid var(--line); }
@@ -171,7 +196,7 @@
       footer.note p { margin: 0 0 6px; }
 
       @media (prefers-reduced-motion: reduce) {
-        .bar-btn .bar { transition: none; }
+        .bar-btn .bar, .cal-btn .stack { transition: none; }
       }
     </style>
   </head>
@@ -231,6 +256,25 @@
         </div>
       </section>
 
+      <!-- 消費カロリー 直近14日 -->
+      <section class="card" aria-label="消費カロリー（直近14日）">
+        <h2><span class="dot"></span>消費カロリー（直近14日）</h2>
+        <p class="hint">バーをタップすると、その日の内訳が表示されます。積み上げ棒は総消費カロリー（下が活動分・上が基礎代謝）です。11月11日以前はまだ取り込まれていません。</p>
+        <div class="chart-readout" aria-live="polite">
+          <span class="d" id="calRoDay">11月20日（金）・途中経過</span>
+        </div>
+        <div class="cal-detail" aria-live="polite">
+          <span class="ci act"><span class="sw" aria-hidden="true"></span><span class="clbl">活動分</span><span class="cv num" id="calRoAct">7<small> kcal</small></span></span>
+          <span class="ci bas"><span class="sw" aria-hidden="true"></span><span class="clbl">基礎代謝</span><span class="cv num" id="calRoBasal">371<small> kcal</small></span></span>
+          <span class="ci tot"><span class="clbl">合計</span><span class="cv num" id="calRoTotal">378<small> kcal</small></span></span>
+        </div>
+        <div class="cal-bars" id="calBars" role="group" aria-label="日別消費カロリーの積み上げ棒グラフ"></div>
+        <div class="avg-line">
+          <span>取り込み期間：11月12日〜20日（9日分）</span>
+          <span>前日 11/19 の基礎代謝は <strong class="num">1,961</strong>kcal</span>
+        </div>
+      </section>
+
       <!-- 更新スケジュール -->
       <section class="card" aria-label="更新スケジュール">
         <h2><span class="dot s"></span>更新スケジュール</h2>
@@ -276,7 +320,7 @@
       </div>
 
       <footer class="note">
-        <p>表示されている歩数・消費カロリー・エクササイズ・距離・ワークアウトは、すべて Apple Health から取り込んだ実績値です。最新の確定日は 2026年11月19日（歩数 20,857歩・消費カロリー 1,094kcal・エクササイズ 100分・距離 16.3km、ワークアウトは全期間で12件）で、11月20日分は 14:30 の更新時点で歩数 1,156歩・総消費カロリー 378kcal・距離 0.9km まで同期済みの途中経過です。体重は Apple Health にも手入力にも記録がありませんでした。</p>
+        <p>表示されている歩数・消費カロリー・エクササイズ・距離・ワークアウトは、すべて Apple Health から取り込んだ実績値です。最新の確定日は 2026年11月19日（歩数 20,857歩・総消費カロリー 3,055kcal（活動分 1,094kcal・基礎代謝 1,961kcal）・エクササイズ 100分・距離 16.3km、ワークアウトは全期間で12件）で、11月20日分は 14:30 の更新時点で歩数 1,156歩・総消費カロリー 378kcal・距離 0.9km まで同期済みの途中経過です。体重は Apple Health にも手入力にも記録がありませんでした。</p>
         <p>このページは日中に数回（朝 7:00・昼 12:00・夕方 17:00・夜 21:00）、最新の取り込み内容で同じURLに再発行されます。リアルタイム表示ではないため、数値は最後の更新時点のものになります。</p>
         <p>このページは見る専用です。リンクを知っている人は誰でも内容を見られるので、リンクの取り扱いにはご注意ください。体重の入力や目標設定は、これまで通り Muse 内の健康管理アプリで行います。</p>
       </footer>
@@ -332,6 +376,101 @@
             setTimeout(function () {
               bar.style.height = day.v === null ? "4px" : Math.max(6, Math.round(day.v / max * 96)) + "px";
             }, reduceMotion ? 0 : 120 + i * 60);
+          });
+        });
+
+        /* --- 14 day calorie stacked bars (下：活動分 / 上：基礎代謝) --- */
+        var calDays = [
+          { d: "11月7日（土）", label: "7", act: null, basal: null },
+          { d: "11月8日（日）", label: "8", act: null, basal: null },
+          { d: "11月9日（月）", label: "9", act: null, basal: null },
+          { d: "11月10日（火）", label: "10", act: null, basal: null },
+          { d: "11月11日（水）", label: "11", act: null, basal: null },
+          { d: "11月12日（木）", label: "12", act: 418, basal: 695 },
+          { d: "11月13日（金）", label: "13", act: 566, basal: 1709 },
+          { d: "11月14日（土）", label: "14", act: 909, basal: 1649 },
+          { d: "11月15日（日）", label: "15", act: 170, basal: null },
+          { d: "11月16日（月）", label: "16", act: 702, basal: 1369 },
+          { d: "11月17日（火）", label: "17", act: 91, basal: 1729 },
+          { d: "11月18日（水）", label: "18", act: 573, basal: 1844 },
+          { d: "11月19日（木）", label: "19", act: 1094, basal: 1961 },
+          { d: "11月20日（金）・途中経過", label: "20", act: 7, basal: 371, today: true }
+        ];
+        var calMax = 3055;
+        var calBarsEl = document.getElementById("calBars");
+        var calRoDay = document.getElementById("calRoDay");
+        var calDetail = document.querySelector(".cal-detail");
+
+        function calShow(day) {
+          calRoDay.textContent = day.d;
+          if (day.act === null) {
+            calDetail.innerHTML = '<span class="none">記録なし（未同期）</span>';
+            return;
+          }
+          var total = day.act + (day.basal || 0);
+          var basalHtml = day.basal === null
+            ? '<span class="none">未同期</span>'
+            : fmt(day.basal) + "<small> kcal</small>";
+          calDetail.innerHTML =
+            '<span class="ci act"><span class="sw" aria-hidden="true"></span><span class="clbl">活動分</span><span class="cv num">' + fmt(day.act) + "<small> kcal</small></span></span>" +
+            '<span class="ci bas"><span class="sw" aria-hidden="true"></span><span class="clbl">基礎代謝</span><span class="cv num">' + basalHtml + "</span></span>" +
+            '<span class="ci tot"><span class="clbl">合計</span><span class="cv num">' + fmt(total) + "<small> kcal</small></span></span>";
+        }
+
+        calDays.forEach(function (day, i) {
+          var col = document.createElement("div");
+          col.className = "cal-col" + (day.today ? " today" : "");
+          var btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "cal-btn";
+          btn.setAttribute("aria-pressed", day.today ? "true" : "false");
+          if (day.act === null) {
+            btn.setAttribute("aria-label", day.d + " 記録なし（未同期）");
+          } else if (day.basal === null) {
+            btn.setAttribute("aria-label", day.d + " 活動分 " + fmt(day.act) + "kcal、基礎代謝は未同期");
+          } else {
+            btn.setAttribute("aria-label", day.d + " 活動分 " + fmt(day.act) + "kcal、基礎代謝 " + fmt(day.basal) + "kcal、合計 " + fmt(day.act + day.basal) + "kcal");
+          }
+          var stack = document.createElement("span");
+          stack.className = "stack";
+          if (day.act === null) {
+            var none = document.createElement("span");
+            none.className = "seg-none";
+            stack.appendChild(none);
+          } else {
+            if (day.basal !== null) {
+              var segB = document.createElement("span");
+              segB.className = "seg-basal";
+              stack.appendChild(segB);
+            }
+            var segA = document.createElement("span");
+            segA.className = "seg-act";
+            stack.appendChild(segA);
+          }
+          btn.appendChild(stack);
+          var lbl = document.createElement("span");
+          lbl.className = "cal-day";
+          lbl.textContent = day.label;
+          col.appendChild(btn);
+          col.appendChild(lbl);
+          calBarsEl.appendChild(col);
+
+          btn.addEventListener("click", function () {
+            calBarsEl.querySelectorAll(".cal-btn").forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
+            btn.setAttribute("aria-pressed", "true");
+            calShow(day);
+          });
+
+          requestAnimationFrame(function () {
+            setTimeout(function () {
+              if (day.act === null) { stack.style.height = "4px"; return; }
+              var total = day.act + (day.basal || 0);
+              var h = Math.max(8, Math.round(total / calMax * 100));
+              var actH = Math.max(3, Math.round(h * day.act / total));
+              stack.style.height = h + "px";
+              segA.style.height = actH + "px";
+              if (day.basal !== null) segB.style.height = (h - actH) + "px";
+            }, reduceMotion ? 0 : 120 + i * 40);
           });
         });
       })();
