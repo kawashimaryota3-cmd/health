@@ -203,18 +203,18 @@
   <body>
     <div class="wrap">
 
-      <p class="updated-line">最終更新 <span class="num">11/20 14:30</span></p>
+      <p class="updated-line">最終更新 <span class="num">11/20 17:00</span></p>
 
       <!-- 今日のサマリー -->
       <section aria-label="今日のサマリー">
         <h1 class="today-date">11月20日（金）</h1>
-        <div class="ring-box" role="img" aria-label="11月20日 14時30分時点の歩数 1,156歩。歩数目標は未設定です">
+        <div class="ring-box" role="img" aria-label="11月20日 17時00分時点の歩数 2,440歩。歩数目標は未設定です">
           <svg viewBox="0 0 272 272" aria-hidden="true">
             <circle cx="136" cy="136" r="118" fill="none" stroke="var(--ring-track)" stroke-width="26" />
           </svg>
           <div class="ring-center">
             <span class="lbl">歩数</span>
-            <span class="steps num">1,156</span>
+            <span class="steps num">2,440</span>
             <span class="goal">目標は未設定</span>
           </div>
         </div>
@@ -223,29 +223,28 @@
         <div class="stat-row">
           <div class="stat">
             <p class="slbl">総消費カロリー</p>
-            <p class="sval num">378<small>kcal</small></p>
-            <p class="ssub">活動分 <span class="num">7</span> kcal<br />基礎代謝 <span class="num">371</span> kcal</p>
+            <p class="sval num">1,112<small>kcal</small></p>
+            <p class="ssub">活動分 <span class="num">81</span> kcal<br />基礎代謝 <span class="num">1,031</span> kcal</p>
           </div>
           <div class="stat">
             <p class="slbl">エクササイズ</p>
-            <p class="sval num">―<small>分</small></p>
-            <p class="ssub">未同期</p>
+            <p class="sval num">4<small>分</small></p>
           </div>
           <div class="stat">
             <p class="slbl">距離</p>
-            <p class="sval num">0.9<small>km</small></p>
+            <p class="sval num">1.9<small>km</small></p>
           </div>
         </div>
-        <p class="week-line">直近7日の平均 <strong class="num">9,020</strong>歩 ・ 今週のワークアウト <strong class="num">7</strong>回</p>
+        <p class="week-line">直近7日の平均 <strong class="num">9,203</strong>歩 ・ 直近7日のワークアウト <strong class="num">4</strong>回</p>
       </section>
 
       <!-- 直近7日 -->
       <section class="card" aria-label="直近7日の歩数">
         <h2><span class="dot g"></span>直近7日の歩数</h2>
-        <p class="hint">バーをタップすると、その日の歩数が表示されます。11月20日は 14:30 時点の途中経過です。</p>
+        <p class="hint">バーをタップすると、その日の歩数が表示されます。11月20日は 17:00 時点の途中経過です。</p>
         <div class="chart-readout" aria-live="polite">
           <span class="d" id="roDay">11月20日（金）・途中経過</span>
-          <span class="v num" id="roVal">1,156<small> 歩</small></span>
+          <span class="v num" id="roVal">2,440<small> 歩</small></span>
         </div>
         <div class="bars" id="bars" role="group" aria-label="日別歩数の棒グラフ"></div>
         <div class="avg-line">
@@ -257,14 +256,14 @@
       <!-- 消費カロリー 直近7日 -->
       <section class="card" aria-label="消費カロリー（直近7日）">
         <h2><span class="dot"></span>消費カロリー（直近7日）</h2>
-        <p class="hint">バーをタップすると、その日の内訳が表示されます。積み上げ棒は総消費カロリー（下が活動分・上が基礎代謝）です。11月20日は 14:30 時点の途中経過です。</p>
+        <p class="hint">バーをタップすると、その日の内訳が表示されます。積み上げ棒は総消費カロリー（下が活動分・上が基礎代謝）です。11月20日は 17:00 時点の途中経過です。</p>
         <div class="chart-readout" aria-live="polite">
           <span class="d" id="calRoDay">11月20日（金）・途中経過</span>
         </div>
         <div class="cal-detail" aria-live="polite">
-          <span class="ci act"><span class="sw" aria-hidden="true"></span><span class="clbl">活動分</span><span class="cv num" id="calRoAct">7<small> kcal</small></span></span>
-          <span class="ci bas"><span class="sw" aria-hidden="true"></span><span class="clbl">基礎代謝</span><span class="cv num" id="calRoBasal">371<small> kcal</small></span></span>
-          <span class="ci tot"><span class="clbl">合計</span><span class="cv num" id="calRoTotal">378<small> kcal</small></span></span>
+          <span class="ci act"><span class="sw" aria-hidden="true"></span><span class="clbl">活動分</span><span class="cv num" id="calRoAct">81<small> kcal</small></span></span>
+          <span class="ci bas"><span class="sw" aria-hidden="true"></span><span class="clbl">基礎代謝</span><span class="cv num" id="calRoBasal">1,031<small> kcal</small></span></span>
+          <span class="ci tot"><span class="clbl">合計</span><span class="cv num" id="calRoTotal">1,112<small> kcal</small></span></span>
         </div>
         <div class="cal-bars" id="calBars" role="group" aria-label="日別消費カロリーの積み上げ棒グラフ"></div>
         <div class="avg-line">
@@ -317,10 +316,10 @@
         </ul>
       </section>
 
-      <p class="notice" style="margin:0 0 6px;">iPhoneからの同期がまだ完了していない期間があります（2026-08-23〜2026-09-01を含む多数の日（73日以上）が未同期のためデータが欠落しています。取得できたのは主に2026-11-12〜2026-11-20分です）。同期が進むと自動で埋まります。</p>
+      <p class="notice" style="margin:0 0 6px;">iPhoneからの同期がまだ完了していない期間があります（2026-08-23〜2026-11-11のうち82日分が未同期のためデータが欠落しています。取得できたのは2026-11-12〜2026-11-20の9日分です）。同期が進むと自動で埋まります。</p>
 
       <footer class="note">
-        <p>表示されている歩数・消費カロリー・エクササイズ・距離・ワークアウトは、すべて Apple Health から取り込んだ実績値です。最新の確定日は 2026年11月19日（歩数 20,857歩・総消費カロリー 3,055kcal（活動分 1,094kcal・基礎代謝 1,961kcal）・エクササイズ 100分・距離 16.3km、ワークアウトは全期間で12件）で、11月20日分は 14:30 の更新時点で歩数 1,156歩・総消費カロリー 378kcal・距離 0.9km まで同期済みの途中経過です。体重は Apple Health にも手入力にも記録がありませんでした。</p>
+        <p>表示されている歩数・消費カロリー・エクササイズ・距離・ワークアウトは、すべて Apple Health から取り込んだ実績値です。最新の確定日は 2026年11月19日（歩数 20,857歩・総消費カロリー 3,055kcal（活動分 1,094kcal・基礎代謝 1,961kcal）・エクササイズ 100分・距離 16.3km、ワークアウトは全期間で12件）で、11月20日分は 17:00 の更新時点で歩数 2,440歩・総消費カロリー 1,112kcal（活動分 81kcal・基礎代謝 1,031kcal）・エクササイズ 4分・距離 1.9km まで同期済みの途中経過です。体重は Apple Health にも手入力にも記録がありませんでした。</p>
         <p>このページは日中に数回（朝 7:00・昼 12:00・夕方 17:00・夜 21:00）、最新の取り込み内容で同じURLに再発行されます。リアルタイム表示ではないため、数値は最後の更新時点のものになります。</p>
         <p>このページは見る専用です。リンクを知っている人は誰でも内容を見られるので、リンクの取り扱いにはご注意ください。体重の入力や目標設定は、これまで通り Muse 内の健康管理アプリで行います。</p>
       </footer>
@@ -339,7 +338,7 @@
           { d: "11月17日（火）", label: "17", v: 2011 },
           { d: "11月18日（水）", label: "18", v: 9742 },
           { d: "11月19日（木）", label: "19", v: 20857 },
-          { d: "11月20日（金）・途中経過", label: "20", v: 1156, today: true }
+          { d: "11月20日（金）・途中経過", label: "20", v: 2440, today: true }
         ];
         var max = 20857;
         var barsEl = document.getElementById("bars");
@@ -382,12 +381,12 @@
         /* --- 7 day calorie stacked bars (下：活動分 / 上：基礎代謝) --- */
         var calDays = [
           { d: "11月14日（土）", label: "14", act: 909, basal: 1649 },
-          { d: "11月15日（日）", label: "15", act: 170, basal: null },
+          { d: "11月15日（日）", label: "15", act: null, basal: null },
           { d: "11月16日（月）", label: "16", act: 702, basal: 1369 },
           { d: "11月17日（火）", label: "17", act: 91, basal: 1729 },
           { d: "11月18日（水）", label: "18", act: 573, basal: 1844 },
           { d: "11月19日（木）", label: "19", act: 1094, basal: 1961 },
-          { d: "11月20日（金）・途中経過", label: "20", act: 7, basal: 371, today: true }
+          { d: "11月20日（金）・途中経過", label: "20", act: 81, basal: 1031, today: true }
         ];
         var calMax = 3055;
         var calBarsEl = document.getElementById("calBars");
